@@ -21,7 +21,6 @@ env:
 jobs:
   build:
 
-
     runs-on: ubuntu-latest
 
     steps:
@@ -41,13 +40,26 @@ jobs:
         with:
           arguments: shadowJar
           build-root-directory: backend
-      - name: Initialize Terraform
-        run: cd terraform && terraform init
+      - name: Initialize Terraform on backend
+        run: cd backend && cd terraform && terraform init
       - name: Check format
-        run: cd terraform && terraform fmt -check
+        run: cd backend && cd terraform && terraform fmt -check
       - name: Validate Terraform
-        run: cd terraform && terraform validate
+        run: cd backend && cd terraform && terraform validate
       - name: Plan Terraform
-        run: cd terraform && terraform plan -input=false
+        run: cd backend && cd terraform && terraform plan -input=false
       - name: Apply Terraform
-        run: cd terraform && terraform apply -input=false -auto-approve
+        run: cd backend && cd terraform && terraform apply -input=false -auto-approve
+
+      - name: Build with NPM
+        run: cd frontend && npm install && npm run build
+      - name: Initialize Terraform on frontend
+        run: cd frontend && cd terraform && terraform init
+      - name: Check format
+        run: cd frontend && cd terraform && terraform fmt -check
+      - name: Validate Terraform
+        run: cd frontend && cd terraform && terraform validate
+      - name: Plan Terraform
+        run: cd frontend && cd terraform && terraform plan -input=false
+      - name: Apply Terraform
+        run: cd frontend && cd terraform && terraform apply -input=false -auto-approve
