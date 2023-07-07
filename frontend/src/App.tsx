@@ -9,8 +9,8 @@ function App() {
         setInputValue(event.target.value);
         const response =
             await fetch("https://d49ut6g7e1.execute-api.eu-west-1.amazonaws.com/serverless_lambda_stage/rover",
-                {body: JSON.stringify({"input": ""}), method: "POST", mode: "no-cors"});
-        const finalRoverPosition = await response.text();
+                {body: JSON.stringify({"input": ""}), method: "POST"});
+        const finalRoverPosition = await response.json();
         setMoves(finalRoverPosition)
     }
 
